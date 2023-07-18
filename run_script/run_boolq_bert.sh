@@ -1,6 +1,6 @@
 export TASK_NAME=superglue
 export DATASET_NAME=boolq
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=3
 
 bs=32
 lr=5e-3

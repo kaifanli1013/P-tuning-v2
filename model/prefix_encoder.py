@@ -13,7 +13,7 @@ class PrefixEncoder(torch.nn.Module):
         super().__init__()
         self.prefix_projection = config.prefix_projection
         if self.prefix_projection:
-            # Use a two-layer MLP to encode the prefix
+            # Use a two-layer MLP to encode the prefix 
             self.embedding = torch.nn.Embedding(config.pre_seq_len, config.hidden_size)
             self.trans = torch.nn.Sequential(
                 torch.nn.Linear(config.hidden_size, config.prefix_hidden_size),
@@ -24,9 +24,11 @@ class PrefixEncoder(torch.nn.Module):
             self.embedding = torch.nn.Embedding(config.pre_seq_len, config.num_hidden_layers * 2 * config.hidden_size)
 
     def forward(self, prefix: torch.Tensor):
+        # 如果使用重参数化，那么就需要将prefix的embedding再经过两层MLP
         if self.prefix_projection:
             prefix_tokens = self.embedding(prefix)
             past_key_values = self.trans(prefix_tokens)
+        # 直接省去重参数化, 作者的做法
         else:
             past_key_values = self.embedding(prefix)
         return past_key_values
